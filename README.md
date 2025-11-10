@@ -29,24 +29,40 @@ The network is logically segmented by department and function.
 IP Addressing
 A Variable Length Subnet Masking (VLSM) scheme was used for the IPv4 plan.
     • Rationale: VLSM allows for the precise allocation of IP addresses based on the host requirements of each department. This eliminates the waste associated with traditional classful subnetting and ensures the IP plan is efficient and scalable. The network is also dual-stacked with IPv6 to ensure future-readiness.
+   
 Site 1: Corporate HQ
+
 VLAN ID	Department	Hosts Req.	IPv4 Network	IPv6 Network
+
 VLAN 10	Sales		192.168.0.0/20	2001:db8:acad::/64
+
 VLAN 20	Customer Service	192.168.16.0/21	2001:db8:acad:1::/64
+
 VLAN 30	Risk Management		192.168.24.0/22	2001:db8:acad:2::/64
+
 VLAN 40	IT	512	192.168.28.0/23	2001:db8:acad:3::/64
+
 VLAN 99	Management	192.168.30.0/28	2001:db8:acad:4::/64
+
 Site 2: Regional Office
+
 VLAN ID	Department	Hosts Req.	IPv4 Network	IPv6 Network
+
 VLAN 10	Operations	192.168.32.0/26	2001:db8:acad:10::/64
+
 VLAN 20	Voice	192.168.32.64/26	2001:db8:acad:11::/64
+
 VLAN 99	Management	 	192.168.32.128/30	2001:db8:acad:12::/64
+
 Site 3: Data Center
+
 VLAN ID	Service	IPv4 Network	IPv6 Network
+
 VLAN 10	Server Group A	192.168.33.0/29	2001:db8:acad:20::/64
+
 VLAN 20	Server Group B	192.168.33.8/29	2001:db8:acad:21::/64
 
-5. Core Technology Implementation & Rationale
+6. Core Technology Implementation & Rationale
 This section details why specific technologies were chosen to meet the business requirements.
 High Availability: HSRP (Hot Standby Router Protocol)
     • What: HSRP was configured on the two Multilayer Switches (MLS) at the HQ for all five VLAN gateways.
@@ -62,13 +78,13 @@ WAN Connectivity: Static Routing & Summarization
     • What: Static routes were used to connect the three sites.
     • Why: For a fixed hub-and-spoke topology of this size, static routing provides simplicity, security, and precise control. It avoids the configuration overhead and security risks of a dynamic routing protocol.
     • Optimization: Route summarization (supernetting) was used. For example, the HQ router has a single static route (192.168.32.0/25) to reach the entire Regional Office, rather than three separate routes. This keeps routing tables small and makes packet forwarding highly efficient.
-6. Testing & Validation 
+7. Testing & Validation 
 The network's functionality was confirmed through a rigorous testing plan:
     1. DHCP Verification: All PCs in all VLANs at all sites successfully leased the correct IP address, subnet mask, and default gateway from the central server (192.168.33.2).
     2. Inter-VLAN Connectivity: Devices in different VLANs at the same site (e.g., HQ Sales to HQ IT) could successfully ping each other, confirming Inter-VLAN routing was working.
     3. Site-to-Site Connectivity: All devices could successfully ping devices at other sites (e.g., HQ PC to Branch PC, Branch PC to DC Server), confirming the static WAN routes were correct.
     4. HSRP Failover Test: A continuous ping was run from an HQ PC to a DC server. The active MLS for that PC's VLAN was manually disconnected. The ping dropped for only 1-2 packets before the standby MLS took over and connectivity was restored, successfully proving the high-availability design works.
-7. Key Skills Demonstrated
+8. Key Skills Demonstrated
     • Network Design: Hierarchical (Core/Distribution/Access) and Router-on-a-Stick (ROAS) topologies.
     • IP Addressing: IPv4 (VLSM, Subnetting), IPv6, and Dual-Stack implementation.
     • Layer 2 Switching: VLANs, 802.1q Trunking, Access Ports.
