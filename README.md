@@ -11,7 +11,7 @@ The primary business requirements were:
     • Cost-Effectiveness: The smaller Regional Office needed full segmentation capabilities (like the HQ) but without the high cost of purchasing redundant Layer 3 switches.
     • Future-Proofing: The entire network needed to be compatible with IPv6 to prepare for the eventual exhaustion of IPv4 and modern internet standards.
 3. Network Design & Topology
-The network was designed as a hub-and-spoke WAN topology, with the Corporate HQ acting as the central hub connecting to the Branch Office and Data Center.
+The network was designed as a full mash WAN topology.
     • Site 1: Corporate HQ (Main Branch)
         ◦ Design: A three-tier hierarchical model was used for high performance and scalability.
         ◦ Core/Distribution Layer: Two redundant Multilayer Switches (MLS) handle all high-speed Inter-VLAN routing.
@@ -76,7 +76,7 @@ Centralized Services: DHCP Relay
     • How: The ip helper-address 192.168.33.2 command was configured on every SVI (at HQ) and sub-interface (at the Branch) to forward client DHCP requests across the WAN to the central server.
 WAN Connectivity: Static Routing & Summarization
     • What: Static routes were used to connect the three sites.
-    • Why: For a fixed hub-and-spoke topology of this size, static routing provides simplicity, security, and precise control. It avoids the configuration overhead and security risks of a dynamic routing protocol.
+    • Why: For a fixed Full-mash topology of this size, static routing provides simplicity, security, and precise control. It avoids the configuration overhead and security risks of a dynamic routing protocol.
     • Optimization: Route summarization (supernetting) was used. For example, the HQ router has a single static route (192.168.32.0/25) to reach the entire Regional Office, rather than three separate routes. This keeps routing tables small and makes packet forwarding highly efficient.
 7. Testing & Validation 
 The network's functionality was confirmed through a rigorous testing plan:
